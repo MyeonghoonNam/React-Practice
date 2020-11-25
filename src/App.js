@@ -5,7 +5,14 @@ import PhoneInfoList from './components/PhoneInfoList';
 class App extends Component {
   id = 0;
   state = {
-    information: []
+    information: [],
+    keyword:''
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      keyword:e.target.value
+    })
   }
 
   handleCreate = (data) => {
@@ -36,13 +43,22 @@ class App extends Component {
   }
 
   render() {
+    const filteredList = this.state.information.filter(
+      info => info.name.indexOf(this.state.keyword) !== -1
+    );
+
     return (
       <div>
         <PhoneForm
           onCreate={this.handleCreate}
         />
+        <input
+          placeholder="이름을 검색하세요."
+          onChange={this.handleChange}
+          value={this.state.keyword}
+        />
         <PhoneInfoList 
-          data={this.state.information}
+          data={filteredList}
           onRemove={this.handleRemove}
           onUpdate={this.handleUpdate}
         />
